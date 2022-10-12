@@ -20,9 +20,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "i2c-lcd.h"
-//#include "custom_chars.h"
 #include "stdint.h"
-#include "stm32_ds3231.h"
 #include "stdio.h"
 #include "stdint.h"
 /* Private includes ----------------------------------------------------------*/
@@ -32,14 +30,8 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-_RTC rtc = {
-    .Year = 21, .Month = 10, .Date = 25,
-    .DaysOfWeek = MONDAY,
-    .Hour = 13, .Min = 20, .Sec = 00
-};
-
 uint8_t regVal;
-float rtcTemp;
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -57,10 +49,8 @@ float rtcTemp;
  uint8_t rxData[6],decData[6];
  uint8_t pData[2] = {0x40, 0x00};
  wiiNunchuck keyStatus;
- char aaa;
- short ax,ay,az=0;
- char flag=0;
  int counter=0;
+ int cnt=0;
  //The HAL library set by left shifting the 7bit address 
  #define WII_NUNCHUCK_DEV_ID ((0x52)<<1)
 /* USER CODE END PD */
@@ -130,7 +120,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-char vieta;
+
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -143,38 +133,12 @@ char vieta;
 	HAL_Delay(2);
 WiiNunchuck_init(&hi2c1);
   /* USER CODE END 2 */
-  DS3231_Init(&hi2c1);
- // DS3231_SetTime(&rtc);
-	
-	  /* Configure Alarm1 */
-  DS3231_ClearAlarm1();
-  //DS3231_SetAlarm1(ALARM_MODE_ONCE_PER_SECOND, 0, 0, 0, 0);
-  DS3231_SetAlarm1(ALARM_MODE_SEC_MATCHED, 0, 0, 0, 30);
-	
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
 		
-		if(counter >= 10000){
-		counter=0;
-		if(flag==1){
-		flag=0;}else {flag=1;}
-		}
-		    int cnt=0;
-		
-		if(flag==0){
-		    DS3231_GetTime(&rtc);
-    DS3231_ReadTemperature(&rtcTemp);
-
-    ReadRegister(DS3231_REG_STATUS, &regVal);
-    if(regVal & DS3231_STA_A1F)
-    {
-      regVal &= ~DS3231_STA_A1F;
-      WriteRegister(DS3231_REG_STATUS, regVal);
-    }
-	}
-		else {		
    send_request(&hi2c1);
     HAL_Delay(2);
 
@@ -194,26 +158,12 @@ WiiNunchuck_init(&hi2c1);
     keyStatus.accel_x = (((uint16_t)decData[2])<<2) | ((decData[5]>>2) & 0x03);
     keyStatus.accel_y = (((uint16_t)decData[3])<<2) | ((decData[5]>>4) & 0x03);
     keyStatus.accel_z = (((uint16_t)decData[4])<<2) | ((decData[5]>>6) & 0x03);
-	}
-		
-	/*	if(flag == 0){
-		LCDGotoXY(0,1);
-	lcd_send_string("                ");
-			flag=1;
-			} */
-	
-			if(flag==0){
-		sprintf(mystr,"%02d/%02d/%02d %1d flag%1d",rtc.Year,rtc.Month,rtc.Date,rtc.DaysOfWeek,flag);
-		lcd_string_draw(mystr, 0, 1);
-		sprintf(mystr,"%02d:%02d:%02d T:%2.2f",rtc.Hour,rtc.Min,rtc.Sec,rtcTemp);
-		lcd_string_draw(mystr, 0, 0);
-		    HAL_Delay(1000); 
-			} else {
+
 		sprintf(mystr,"X%03d  Y%03d  Z%03d",keyStatus.accel_x,keyStatus.accel_y,keyStatus.accel_z);
 		lcd_string_draw(mystr, 0, 1);
 				sprintf(mystr,"JX%03d JY%03d C%01dZ%01d",keyStatus.joy_x,keyStatus.joy_y,keyStatus.button_c,keyStatus.button_z);
 		lcd_string_draw(mystr, 0, 0);   
-			HAL_Delay(100); }
+			HAL_Delay(100); 
 		
     /* USER CODE END WHILE */
 		
