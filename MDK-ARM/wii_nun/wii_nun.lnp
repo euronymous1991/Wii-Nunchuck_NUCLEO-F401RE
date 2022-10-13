@@ -4,6 +4,7 @@
 "wii_nun\stm32f4xx_it.o"
 "wii_nun\stm32f4xx_hal_msp.o"
 "wii_nun\i2c-lcd.o"
+"wii_nun\wii_nunchuk.o"
 "wii_nun\stm32f4xx_hal_i2c.o"
 "wii_nun\stm32f4xx_hal_i2c_ex.o"
 "wii_nun\stm32f4xx_hal_rcc.o"

@@ -19,58 +19,30 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+#include "Wii_Nunchuk.h"
 #include "i2c-lcd.h"
 #include "stdint.h"
 #include "stdio.h"
 #include "stdint.h"
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-uint8_t regVal;
 
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-//nunchaku structure declaration 
- typedef struct {
-    uint8_t joy_x;
-    uint8_t joy_y;
-    uint8_t button_c;
-    uint8_t button_z;
-    uint16_t accel_x;
-    uint16_t accel_y;
-    uint16_t accel_z;
- }wiiNunchuck;
- uint8_t rxData[6],decData[6];
- uint8_t pData[2] = {0x40, 0x00};
- wiiNunchuck keyStatus;
- int counter=0;
- int cnt=0;
- //The HAL library set by left shifting the 7bit address 
- #define WII_NUNCHUCK_DEV_ID ((0x52)<<1)
+ 
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
- static void send_request(I2C_HandleTypeDef *hi2c)
- {
-    uint8_t pData[2] = {0x00, 0x00};
-    HAL_I2C_Master_Transmit(hi2c, WII_NUNCHUCK_DEV_ID, pData, 1, 3000);
- }
+
  
-  static uint8_t decode_byte(uint8_t x)
- {
-    return ((x ^ 0x17) + 0x17);
- }
-  void WiiNunchuck_init(I2C_HandleTypeDef *hi2c)
- {
-    HAL_I2C_Master_Transmit(hi2c, WII_NUNCHUCK_DEV_ID, pData, 2, 3000);
-}
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -79,7 +51,9 @@ I2C_HandleTypeDef hi2c1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-
+ wiiNunchuck Wii_values;
+ int counter=0;
+ char mystr[17];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -87,7 +61,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_USART2_UART_Init(void);
-char mystr[17];
+
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -131,37 +105,19 @@ int main(void)
 	lcd_init ();
 	lcd_clear ();
 	HAL_Delay(2);
-WiiNunchuck_init(&hi2c1);
+	WiiNunchuck_init(&Wii_values,&hi2c1);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-		
-   send_request(&hi2c1);
-    HAL_Delay(2);
+		WiiNunchuck_ReadData(&Wii_values, &hi2c1);
 
-    //6Byte lead 
-    HAL_I2C_Master_Receive(&hi2c1, WII_NUNCHUCK_DEV_ID|0x01 , rxData, 6, 3000);
- 
-		//Data composite 
-    for(cnt=0; cnt<6; cnt++){
-        decData[cnt] = decode_byte(rxData[cnt]);
-    }
-    //assignment to structure 
-
-    keyStatus.joy_x = decData[0];
-    keyStatus.joy_y = decData[1];
-    keyStatus.button_c = (decData[5]>>1) & 0x01;
-    keyStatus.button_z = (decData[5]>>0) & 0x01;
-    keyStatus.accel_x = (((uint16_t)decData[2])<<2) | ((decData[5]>>2) & 0x03);
-    keyStatus.accel_y = (((uint16_t)decData[3])<<2) | ((decData[5]>>4) & 0x03);
-    keyStatus.accel_z = (((uint16_t)decData[4])<<2) | ((decData[5]>>6) & 0x03);
-
-		sprintf(mystr,"X%03d  Y%03d  Z%03d",keyStatus.accel_x,keyStatus.accel_y,keyStatus.accel_z);
+		sprintf(mystr,"X%03d  Y%03d  Z%03d",Wii_values.accel_x,Wii_values.accel_y,Wii_values.accel_z);
 		lcd_string_draw(mystr, 0, 1);
-				sprintf(mystr,"JX%03d JY%03d C%01dZ%01d",keyStatus.joy_x,keyStatus.joy_y,keyStatus.button_c,keyStatus.button_z);
+		sprintf(mystr,"JX%03d JY%03d C%01dZ%01d",Wii_values.joy_x,Wii_values.joy_y,Wii_values.button_c,Wii_values.button_z);
 		lcd_string_draw(mystr, 0, 0);   
 			HAL_Delay(100); 
 		
