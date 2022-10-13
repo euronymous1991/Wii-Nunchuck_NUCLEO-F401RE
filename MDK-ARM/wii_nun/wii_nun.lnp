@@ -3,7 +3,6 @@
 "wii_nun\main.o"
 "wii_nun\stm32f4xx_it.o"
 "wii_nun\stm32f4xx_hal_msp.o"
-"wii_nun\i2c-lcd.o"
 "wii_nun\stm32f4xx_hal_i2c.o"
 "wii_nun\stm32f4xx_hal_i2c_ex.o"
 "wii_nun\stm32f4xx_hal_rcc.o"
@@ -24,6 +23,7 @@
 "wii_nun\stm32f4xx_hal_uart.o"
 "wii_nun\system_stm32f4xx.o"
 "wii_nun\wii_nunchuk.o"
+"wii_nun\i2c-lcd.o"
 --library_type=microlib --strict --scatter "wii_nun\wii_nun.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
