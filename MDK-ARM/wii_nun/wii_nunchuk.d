@@ -1,4 +1,4 @@
-wii_nun/wii_nunchuk.o: Wii_Nunchuk.c ..\Core\Inc\main.h \
+wii_nun/wii_nunchuk.o: ..\Wii_Nunchuk\Wii_Nunchuk.c ..\Core\Inc\main.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h \
   ..\Core\Inc\stm32f4xx_hal_conf.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h \
@@ -31,4 +31,4 @@ wii_nun/wii_nunchuk.o: Wii_Nunchuk.c ..\Core\Inc\main.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr_ex.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h \
-  ..\Core\Inc\Wii_Nunchuk.h
+  ..\Wii_Nunchuk\Wii_Nunchuk.h

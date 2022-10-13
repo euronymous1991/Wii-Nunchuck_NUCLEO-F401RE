@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F401xE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc; ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy; ../Drivers/CMSIS/Device/ST/STM32F4xx/Include; ../Drivers/CMSIS/Include</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\Wii_Nunchuk</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -413,11 +413,6 @@
               <FileName>i2c-lcd.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Core\Src\i2c-lcd.c</FilePath>
-            </File>
-            <File>
-              <FileName>Wii_Nunchuk.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Wii_Nunchuk.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -527,7 +522,14 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>Metrology</GroupName>
+          <GroupName>Wii_Nunchuk</GroupName>
+          <Files>
+            <File>
+              <FileName>Wii_Nunchuk.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Wii_Nunchuk\Wii_Nunchuk.c</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>::CMSIS</GroupName>
