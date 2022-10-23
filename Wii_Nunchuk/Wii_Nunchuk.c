@@ -35,7 +35,7 @@ void WiiNunchuck_ReadData(wiiNunchuck * dev, I2C_HandleTypeDef * i2cHandle) {
   HAL_I2C_Master_Receive(i2cHandle, WII_NUNCHUCK_DEV_ID | 0x01, rxData, 6, 3000);
 
   //Data composite 
-  for (cnt = 0; cnt < 6; cnt++) {
+  for (cnt = 0; cnt < 6; cnt++) {// six bytes
     decData[cnt] = decode_byte(rxData[cnt]);
   }
   //assignment to structure 
